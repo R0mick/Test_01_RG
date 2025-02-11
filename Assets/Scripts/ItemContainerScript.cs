@@ -9,18 +9,17 @@ using UnityEngine.UI;
 /**
  Physically placed in inventory grid. Item prefabs used as item library. Consumable/ammo items count using from here.  
  **/
-public class InventoryItemScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,IPointerClickHandler
+
+public class ItemContainerScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler,IPointerClickHandler
 {
    
     public Image image;
     public TMP_Text countText;
     
     [HideInInspector] public Transform parentAfterDrag;
-    //public InventorySlotScript currentSlot;
     public int currentSlotNumber;
     public ItemScript item;
     public int currentCount;
-    public bool isClicked;
 
     
     public void InitializeItem(ItemScript newItem, InventorySlotScript slotScript, int count)
@@ -68,9 +67,11 @@ public class InventoryItemScript : MonoBehaviour, IBeginDragHandler, IDragHandle
         image.raycastTarget = true; //enable  visibility for mouse after start drag
     }
 
+    public static Action<ItemContainerScript> OnUseItem;
     public void OnPointerClick(PointerEventData eventData)
     {
-        isClicked = true; //turns off after popup open
+        OnUseItem?.Invoke(this);
+        //Debug.LogFormat("Item {0} ins slot {1} is Clicked",item.name, currentSlotNumber);
         
     }
     

@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using DefaultNamespace;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class InventoryManagerScript : MonoBehaviour
 {
-  public GameObject InventoryItemPrefab;
+  public GameObject ItemContainerPrefab;
   public InventorySlotScript[] inventorySlots;
   public GameObject popupWindow;
   
@@ -20,8 +21,8 @@ public class InventoryManagerScript : MonoBehaviour
     for (int i = 0; i < inventorySlots.Length; i++)
     {
       InventorySlotScript slotScript = inventorySlots[i];
-      InventoryItemScript itemScriptInSlot = slotScript.GetComponentInChildren<InventoryItemScript>();
-      if (itemScriptInSlot == null)
+      ItemContainerScript itemContainerScriptInSlot = slotScript.GetComponentInChildren<ItemContainerScript>();
+      if (itemContainerScriptInSlot == null)
       {
         //Debug.Log(item.name + " added in slotScript "+ slotScript.name);
         SpawnNewItem(item, slotScript,0);
@@ -35,45 +36,25 @@ public class InventoryManagerScript : MonoBehaviour
   {
     
     InventorySlotScript slotScript = inventorySlots[slotNumber-1]; // fix for array system
-    InventoryItemScript itemScriptInSlot = slotScript.GetComponentInChildren<InventoryItemScript>();
-    if (itemScriptInSlot == null)
+    ItemContainerScript itemContainerScriptInSlot = slotScript.GetComponentInChildren<ItemContainerScript>();
+    if (itemContainerScriptInSlot == null)
     {
       //Debug.Log(item.name + " added in slotScript "+ slotScript.name);
       SpawnNewItem(item, slotScript, itemCount);
       return slotScript;
     }
 
-    Debug.LogFormat("Slot is Occupied by {0}", itemScriptInSlot.item.name);
+    Debug.LogFormat("Slot is Occupied by {0}", itemContainerScriptInSlot.item.name);
     return null;
   }
 
   void SpawnNewItem(ItemScript item, InventorySlotScript slotScript,int itemCount)
   {
-    GameObject newItemGameObject = Instantiate(InventoryItemPrefab, slotScript.transform);
-    InventoryItemScript inventoryItemScript = newItemGameObject.GetComponent<InventoryItemScript>();
-    inventoryItemScript.InitializeItem(item, slotScript,itemCount);
+    GameObject newItemGameObject = Instantiate(ItemContainerPrefab, slotScript.transform);
+    ItemContainerScript itemContainerScript = newItemGameObject.GetComponent<ItemContainerScript>();
+    itemContainerScript.InitializeItem(item, slotScript,itemCount);
   }
-
-  private void OpenPopupWindow() //Check Inventory Items For Usage, get stats and translate id to opened popup window
-  {
-    foreach (var slot  in inventorySlots)
-    {
-      InventoryItemScript itemScriptInSlot = slot.GetComponentInChildren<InventoryItemScript>();
-      if (itemScriptInSlot != null)
-      {
-        if(itemScriptInSlot.isClicked)
-        {
-          
-          itemScriptInSlot.isClicked = false;
-          
-          popupWindow.GetComponent<PopupWindowScript>().OpenPopupWithStats(itemScriptInSlot);
-          
-          return;
-        }
-      }
-    }
-  }
-
+  
   public void AddItemFromListByName(string itemName)
   {
     foreach (var item in items)
@@ -119,29 +100,28 @@ public class InventoryManagerScript : MonoBehaviour
   }
   
   
-
-  public InventoryItemScript getItemFromSlot(int slotNumber)
+  public ItemContainerScript getItemFromSlot(int slotNumber)
   {
-    InventoryItemScript itemScriptInSlot = inventorySlots[slotNumber - 1].GetComponentInChildren<InventoryItemScript>();
-    if (itemScriptInSlot != null)
+    ItemContainerScript itemContainerScriptInSlot = inventorySlots[slotNumber - 1].GetComponentInChildren<ItemContainerScript>();
+    if (itemContainerScriptInSlot != null)
     {
-      return itemScriptInSlot;
+      return itemContainerScriptInSlot;
     }
     Debug.LogFormat("No item found in slot {0}", slotNumber);
     return null;
   }
 
-  public List<InventoryItemScript> GetItemsFromInventory()
+  public List<ItemContainerScript> GetItemsFromInventory()
   {
-    List<InventoryItemScript> itemsList = new List<InventoryItemScript>();
-    InventoryItemScript itemScriptInSlot;
+    List<ItemContainerScript> itemsList = new List<ItemContainerScript>();
+    ItemContainerScript itemContainerScriptInSlot;
     foreach (var slot in inventorySlots)
     {
-      itemScriptInSlot = slot.GetComponentInChildren<InventoryItemScript>();
+      itemContainerScriptInSlot = slot.GetComponentInChildren<ItemContainerScript>();
       
-      if (itemScriptInSlot != null)
+      if (itemContainerScriptInSlot != null)
       {
-       itemsList.Add(itemScriptInSlot); 
+       itemsList.Add(itemContainerScriptInSlot); 
       }
     }
     return itemsList;
@@ -151,18 +131,29 @@ public class InventoryManagerScript : MonoBehaviour
   {
     foreach (var slot in inventorySlots)
     {
-      InventoryItemScript itemScriptInSlot = slot.GetComponentInChildren<InventoryItemScript>();
-      if (itemScriptInSlot != null)
+      ItemContainerScript itemContainerScriptInSlot = slot.GetComponentInChildren<ItemContainerScript>();
+      if (itemContainerScriptInSlot != null)
       {
-        itemScriptInSlot.gameObject.SetActive(false);
-        Destroy(itemScriptInSlot.gameObject);
+        itemContainerScriptInSlot.gameObject.SetActive(false);
+        Destroy(itemContainerScriptInSlot.gameObject);
       }
     }
   }
-  
-  
-  private void  Update()
+
+  private void OpenPopupWindow(ItemContainerScript containerScript) //Check Inventory Items For Usage, get stats and translate id to opened popup window
   {
-    OpenPopupWindow();//check if item isClicked then open popUp
+    popupWindow.GetComponent<PopupWindowScript>().OpenPopupWithStats(containerScript);
   }
+
+
+  private void OnEnable()
+  {
+    ItemContainerScript.OnUseItem += OpenPopupWindow;
+  }
+
+  private void OnDisable()
+  {
+    ItemContainerScript.OnUseItem -= OpenPopupWindow;
+  }
+  
 }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿
 using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class ItemScript:MonoBehaviour
+    public class ItemScript: MonoBehaviour
     {
         public string itemName;
         public ItemType itemType;
@@ -38,5 +38,7 @@ namespace DefaultNamespace
             Consumable,
             Ammo
         }
+        
     }
+    
 }

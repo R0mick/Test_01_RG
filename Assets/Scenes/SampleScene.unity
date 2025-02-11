@@ -1165,7 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7021d68c81882fd428ed8a57b7c99729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryItemPrefab: {fileID: 7235656073450160960, guid: 44f391d4a542c614fac8f26262558c55, type: 3}
+  ItemContainerPrefab: {fileID: 7235656073450160960, guid: 44f391d4a542c614fac8f26262558c55, type: 3}
   inventorySlots:
   - {fileID: 6378668222985147308}
   - {fileID: 1461102472}
@@ -1199,13 +1199,13 @@ MonoBehaviour:
   - {fileID: 859415031}
   popupWindow: {fileID: 7349014221292309623}
   items:
-  - {fileID: 1914970007198308331, guid: 298f4ea657daf684dbcf58db0ac517da, type: 3}
   - {fileID: 5515332229575102029, guid: 3f95347e8200766479cfa2c177ffaf40, type: 3}
   - {fileID: 3474648157564419471, guid: c04941b3ad1f33944bc16b5cf5244d47, type: 3}
   - {fileID: 8555671213361046095, guid: 2ea4b768b12d53f43b5730d02ee510c2, type: 3}
   - {fileID: 9124433767197823576, guid: 1d4f40f52cce6284686d1c8002f59979, type: 3}
   - {fileID: 4113992511600179319, guid: 0d831808cb5b9f04bb34ca67ee4622a7, type: 3}
   - {fileID: 3845435369876175033, guid: f3faf12ecba47be41a3c0ab85631e6f3, type: 3}
+  - {fileID: 1914970007198308331, guid: 298f4ea657daf684dbcf58db0ac517da, type: 3}
 --- !u!4 &165019100
 Transform:
   m_ObjectHideFlags: 0
@@ -3339,6 +3339,7 @@ MonoBehaviour:
   enemyCurrentHealth: 0
   enemyTurn: 0
   enemyAimHead: 1
+  enemyDamage: 15
 --- !u!4 &387294567
 Transform:
   m_ObjectHideFlags: 0

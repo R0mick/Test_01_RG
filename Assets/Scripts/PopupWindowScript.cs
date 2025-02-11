@@ -34,51 +34,51 @@ public class PopupWindowScript : MonoBehaviour
     }
     
     
-    public void OpenPopupWithStats(InventoryItemScript itemScriptInSlot) //open popup and set stats in it from item
+    public void OpenPopupWithStats(ItemContainerScript itemContainerScriptInSlot) //open popup and set stats in it from item
     {
-        itemName.SetText(itemScriptInSlot.item.itemName);
-        itemImage.sprite = itemScriptInSlot.item.sprite;
-        armorText.SetText(itemScriptInSlot.item.armor.ToString());
-        weightText.SetText(itemScriptInSlot.item.weight.ToString());
+        itemName.SetText(itemContainerScriptInSlot.item.itemName);
+        itemImage.sprite = itemContainerScriptInSlot.item.sprite;
+        armorText.SetText(itemContainerScriptInSlot.item.armor.ToString());
+        weightText.SetText(itemContainerScriptInSlot.item.weight.ToString());
 
 
 
-        actionButton.GetComponentInChildren<TMP_Text>().SetText(itemScriptInSlot.item.actionType.ToString());
-        altActionButton.GetComponentInChildren<TMP_Text>().SetText(itemScriptInSlot.item.alternativeActionType.ToString());
+        actionButton.GetComponentInChildren<TMP_Text>().SetText(itemContainerScriptInSlot.item.actionType.ToString());
+        altActionButton.GetComponentInChildren<TMP_Text>().SetText(itemContainerScriptInSlot.item.alternativeActionType.ToString());
 
-        actionButton.onClick.AddListener(delegate { action(itemScriptInSlot); });
-        altActionButton.onClick.AddListener(delegate { alternativeAction(itemScriptInSlot); });
+        actionButton.onClick.AddListener(delegate { action(itemContainerScriptInSlot); });
+        altActionButton.onClick.AddListener(delegate { alternativeAction(itemContainerScriptInSlot); });
         
         
         ShowPopup();
     }
 
-    private void action(InventoryItemScript itemScriptInSlot)
+    private void action(ItemContainerScript itemContainerScriptInSlot)
     {
-        switch (itemScriptInSlot.item.actionType)
+        switch (itemContainerScriptInSlot.item.actionType)
         {
             case ItemScript.ActionType.Buy:
             {
-                itemScriptInSlot.currentCount = itemScriptInSlot.item.maxCount;
-                itemScriptInSlot.countText.SetText(itemScriptInSlot.currentCount.ToString());
+                itemContainerScriptInSlot.currentCount = itemContainerScriptInSlot.item.maxCount;
+                itemContainerScriptInSlot.countText.SetText(itemContainerScriptInSlot.currentCount.ToString());
                 break;
             }
             case ItemScript.ActionType.Equip:
             {
-                string currentlyEquipped = characterManagerScript.EquipItem(itemScriptInSlot);
+                string currentlyEquipped = characterManagerScript.EquipItem(itemContainerScriptInSlot);
                 //Debug.Log("item in slot = " + currentlyEquipped);
                 HidePopup();
-                inventoryManagerScript.AddItemFromListByName(currentlyEquipped,itemScriptInSlot.currentSlotNumber+1);
+                inventoryManagerScript.AddItemFromListByName(currentlyEquipped,itemContainerScriptInSlot.currentSlotNumber+1);
                 break;
             }
             case ItemScript.ActionType.Use:
             {
-                characterManagerScript.UseItem(itemScriptInSlot.item);
-                itemScriptInSlot.currentCount -= 1;
-                itemScriptInSlot.countText.SetText(itemScriptInSlot.currentCount.ToString());
-                if (itemScriptInSlot.currentCount == 0)
+                characterManagerScript.UseItem(itemContainerScriptInSlot.item);
+                itemContainerScriptInSlot.currentCount -= 1;
+                itemContainerScriptInSlot.countText.SetText(itemContainerScriptInSlot.currentCount.ToString());
+                if (itemContainerScriptInSlot.currentCount == 0)
                 {
-                    Destroy(itemScriptInSlot.gameObject);
+                    Destroy(itemContainerScriptInSlot.gameObject);
                 }
                 break;
             }
@@ -88,11 +88,11 @@ public class PopupWindowScript : MonoBehaviour
 
     }
 
-    private void alternativeAction(InventoryItemScript itemScriptInSlot)
+    private void alternativeAction(ItemContainerScript itemContainerScriptInSlot)
     {
-        if (itemScriptInSlot.item.alternativeActionType == ItemScript.AlternativeActionType.Delete)
+        if (itemContainerScriptInSlot.item.alternativeActionType == ItemScript.AlternativeActionType.Delete)
         {
-            Destroy(itemScriptInSlot.gameObject);
+            Destroy(itemContainerScriptInSlot.gameObject);
             HidePopup();
         }
     }

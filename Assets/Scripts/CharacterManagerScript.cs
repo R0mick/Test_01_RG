@@ -84,35 +84,35 @@ public class CharacterManagerScript : MonoBehaviour
         enemyTurn = false;
     }
 
-    public String EquipItem(InventoryItemScript inventoryItemScript)
+    public String EquipItem(ItemContainerScript itemContainerScript)
     {
-        if (inventoryItemScript.item.itemType == ItemScript.ItemType.Head)
+        if (itemContainerScript.item.itemType == ItemScript.ItemType.Head)
         {
             string currentlyEquipped = itemInHeadSlotName;
             
-            itemInHeadSlotName = inventoryItemScript.item.itemName;
-            headImage.sprite = inventoryItemScript.item.sprite;
+            itemInHeadSlotName = itemContainerScript.item.itemName;
+            headImage.sprite = itemContainerScript.item.sprite;
             headImage.SetNativeSize();
-            headArmorCountText.SetText(inventoryItemScript.item.armor.ToString());
+            headArmorCountText.SetText(itemContainerScript.item.armor.ToString());
             UpdateArmor();
-            inventoryItemScript.gameObject.SetActive(false);
-            Destroy(inventoryItemScript.gameObject);
+            itemContainerScript.gameObject.SetActive(false);
+            Destroy(itemContainerScript.gameObject);
             return currentlyEquipped;
             
         }
         
-        if (inventoryItemScript.item.itemType == ItemScript.ItemType.Chest)
+        if (itemContainerScript.item.itemType == ItemScript.ItemType.Chest)
         {
             string currentlyEquipped = itemInChestSlotName;
             
             
-            itemInChestSlotName = inventoryItemScript.item.itemName;
-            chestImage.sprite = inventoryItemScript.item.sprite;
+            itemInChestSlotName = itemContainerScript.item.itemName;
+            chestImage.sprite = itemContainerScript.item.sprite;
             chestImage.SetNativeSize();
-            chestArmorCountText.SetText(inventoryItemScript.item.armor.ToString());
+            chestArmorCountText.SetText(itemContainerScript.item.armor.ToString());
             UpdateArmor();
-            inventoryItemScript.gameObject.SetActive(false);
-            Destroy(inventoryItemScript.gameObject);
+            itemContainerScript.gameObject.SetActive(false);
+            Destroy(itemContainerScript.gameObject);
             return currentlyEquipped;
         }
         return null;
@@ -182,13 +182,13 @@ public class CharacterManagerScript : MonoBehaviour
         {
             foreach (var slot in inventoryManagerScript.inventorySlots)
             {
-                InventoryItemScript itemScriptInSlot = slot.GetComponentInChildren<InventoryItemScript>();
-                if (itemScriptInSlot != null)
+                ItemContainerScript itemContainerScriptInSlot = slot.GetComponentInChildren<ItemContainerScript>();
+                if (itemContainerScriptInSlot != null)
                 {
-                    if (itemScriptInSlot.item.itemName == "9x18_Rounds"&& itemScriptInSlot.currentCount>=1)
+                    if (itemContainerScriptInSlot.item.itemName == "9x18_Rounds"&& itemContainerScriptInSlot.currentCount>=1)
                     {
-                        itemScriptInSlot.currentCount-= 1;
-                        itemScriptInSlot.countText.SetText(itemScriptInSlot.currentCount.ToString());
+                        itemContainerScriptInSlot.currentCount-= 1;
+                        itemContainerScriptInSlot.countText.SetText(itemContainerScriptInSlot.currentCount.ToString());
                         return true;
                     }
                 }
@@ -200,13 +200,13 @@ public class CharacterManagerScript : MonoBehaviour
         {
             foreach (var slot in inventoryManagerScript.inventorySlots)
             {
-                InventoryItemScript itemScriptInSlot = slot.GetComponentInChildren<InventoryItemScript>();
-                if (itemScriptInSlot != null)
+                ItemContainerScript itemContainerScriptInSlot = slot.GetComponentInChildren<ItemContainerScript>();
+                if (itemContainerScriptInSlot != null)
                 {
-                    if (itemScriptInSlot.item.itemName == "5.45x39_Rounds"&& itemScriptInSlot.currentCount>=3)
+                    if (itemContainerScriptInSlot.item.itemName == "5.45x39_Rounds"&& itemContainerScriptInSlot.currentCount>=3)
                     {
-                        itemScriptInSlot.currentCount-= 3;
-                        itemScriptInSlot.countText.SetText(itemScriptInSlot.currentCount.ToString());
+                        itemContainerScriptInSlot.currentCount-= 3;
+                        itemContainerScriptInSlot.countText.SetText(itemContainerScriptInSlot.currentCount.ToString());
                         return true;
                     }
                 }

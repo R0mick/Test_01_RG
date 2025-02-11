@@ -31,7 +31,7 @@ public class GameData : MonoBehaviour
         //Inventory
         //get InventoryItem's list
         //get info about slot_number, itemName, count from InventoryItem
-        //write to InventoryItemScript List
+        //write to ItemContainerScript_alt List
         //string format "||slot_number|itemName|count"
 
         public string itemsString;
@@ -144,7 +144,7 @@ public class GameData : MonoBehaviour
     string ConvertInventoryItemsToString()
     {
         string itemsString = string.Empty;
-        List<InventoryItemScript> items = inventoryManagerScript.GetItemsFromInventory();
+        List<ItemContainerScript> items = inventoryManagerScript.GetItemsFromInventory();
 
         foreach (var item in items)
         {

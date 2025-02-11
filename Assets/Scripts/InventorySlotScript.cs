@@ -6,22 +6,22 @@ public class InventorySlotScript : MonoBehaviour, IDropHandler
     public int slotNumber;
     public void OnDrop(PointerEventData eventData)
     {
-        //links item to item slot after drop if empty or swap items if not 
+        //links container to slot after drop if empty or swap items if not 
         if (transform.childCount == 0)
         {
             GameObject dropped = eventData.pointerDrag;
-            InventoryItemScript inventoryItemScript = dropped.GetComponent<InventoryItemScript>();
-            inventoryItemScript.parentAfterDrag = transform;
+            ItemContainerScript itemContainerScriptDropped = dropped.GetComponent<ItemContainerScript>();
+            itemContainerScriptDropped.parentAfterDrag = transform;
         }else
         {
             GameObject dropped = eventData.pointerDrag;
-            InventoryItemScript inventoryItemScript = dropped.GetComponent<InventoryItemScript>();
+            ItemContainerScript itemContainerScriptDropped = dropped.GetComponent<ItemContainerScript>();
             
             GameObject current = transform.GetChild(0).gameObject;
-            InventoryItemScript currentInventory = current.GetComponent<InventoryItemScript>();
+            ItemContainerScript itemContainerScriptCurrent = current.GetComponent<ItemContainerScript>();
             
-            currentInventory.transform.SetParent(inventoryItemScript.parentAfterDrag);
-            inventoryItemScript.parentAfterDrag = transform;
+            itemContainerScriptCurrent.transform.SetParent(itemContainerScriptDropped.parentAfterDrag);
+            itemContainerScriptDropped.parentAfterDrag = transform;
 
         }
 
